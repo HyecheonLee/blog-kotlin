@@ -1,0 +1,29 @@
+package com.hyecheon.backend.core.web.api
+
+import com.hyecheon.backend.core.service.*
+import com.hyecheon.backend.core.web.dto.*
+import org.springframework.http.*
+import org.springframework.web.bind.annotation.*
+
+
+/**
+ * @author hyecheon
+ * @email rainbow880616@gmail.com
+ */
+@RequestMapping(value = ["/api/user"])
+@RestController
+class UserController(
+	val userService: UserService,
+) {
+
+	@PostMapping(value = ["/signUp"])
+	fun signUp(@RequestBody signupUserRequestDto: SignupUserRequestDto) = run {
+		ResponseEntity.ok(userService.signUp(signupUserRequestDto))
+	}
+
+
+	@GetMapping(value = ["/findAll"])
+	fun findAll(): ResponseEntity<*>? {
+		return ResponseEntity.ok("success")
+	}
+}
