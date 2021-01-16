@@ -34,6 +34,6 @@ class ApiExceptionHandler {
 
 	@ExceptionHandler(Exception::class)
 	fun runtimeExceptionHandler(e: Exception) = run {
-		ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+		ResponseEntity(mapOf("message" to e.message), HttpStatus.BAD_REQUEST)
 	}
 }

@@ -1,6 +1,6 @@
-package com.hyecheon.backend.repository
+package com.hyecheon.backend.domain.repository
 
-import com.hyecheon.backend.domain.*
+import com.hyecheon.backend.domain.entity.*
 import org.springframework.data.jpa.repository.*
 
 /**

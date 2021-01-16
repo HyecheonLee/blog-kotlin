@@ -1,4 +1,4 @@
-package com.hyecheon.backend.domain
+package com.hyecheon.backend.domain.entity
 
 import com.github.slugify.*
 import com.hyecheon.backend.core.domain.entity.*
@@ -23,7 +23,7 @@ data class Category(
 
 	@Column(unique = true)
 	var slug: String? = null
-) : BaseEntity() {
+) : BaseEntityUser() {
 	init {
 		val slg = Slugify().withLowerCase(true)
 		slug = slg.slugify(name)

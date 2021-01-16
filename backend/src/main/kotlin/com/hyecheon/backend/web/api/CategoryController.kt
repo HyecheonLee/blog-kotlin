@@ -1,7 +1,7 @@
 package com.hyecheon.backend.web.api
 
-import com.hyecheon.backend.domain.*
-import com.hyecheon.backend.repository.*
+import com.hyecheon.backend.domain.entity.*
+import com.hyecheon.backend.domain.repository.*
 import org.springframework.http.*
 import org.springframework.web.bind.annotation.*
 import javax.validation.*
