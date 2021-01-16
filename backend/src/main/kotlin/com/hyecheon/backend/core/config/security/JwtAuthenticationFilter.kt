@@ -3,18 +3,14 @@ package com.hyecheon.backend.core.config.security
 import TokenUtils.generateJwtToken
 import com.fasterxml.jackson.databind.*
 import com.hyecheon.backend.core.service.*
-import com.hyecheon.backend.core.util.*
-import com.hyecheon.backend.core.util.AuthConstants.AUTH_COOKIE
 import com.hyecheon.backend.core.util.AuthConstants.AUTH_HEADER
 import com.hyecheon.backend.core.web.dto.*
-import org.springframework.beans.factory.annotation.*
 import org.springframework.http.*
 import org.springframework.security.authentication.*
 import org.springframework.security.core.*
 import org.springframework.security.core.authority.*
 import org.springframework.security.core.context.*
 import org.springframework.security.web.authentication.*
-import org.springframework.web.util.*
 import javax.servlet.*
 import javax.servlet.http.*
 
@@ -63,7 +59,7 @@ class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : Us
 
 	override fun successfulAuthentication(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain, authResult: Authentication) {
 		val userDetails = authResult.principal as UserDetailsServiceImpl.CustomUserDetails
-		val userEntity = userDetails.userEntity
+		val userEntity = userDetails.user
 		val token = generateJwtToken(userEntity)
 		response.addHeader(AUTH_HEADER, "Bearer $token")
 		response.characterEncoding = "utf-8";

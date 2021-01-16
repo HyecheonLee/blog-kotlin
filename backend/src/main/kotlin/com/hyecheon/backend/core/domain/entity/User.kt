@@ -9,7 +9,7 @@ import javax.persistence.*
  */
 @Entity
 @Table(indexes = [Index(columnList = "email")])
-data class UserEntity(
+data class User(
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	var id: Long? = null,
@@ -25,13 +25,13 @@ data class UserEntity(
 	var about: String? = null,
 	@OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
-	var roleEntities: MutableSet<UserRoleEntity> = mutableSetOf(),
+	var roles: MutableSet<UserRole> = mutableSetOf(),
 	@Lob
 	val photo: Blob? = null,
 	var resetPasswordLink: String? = null
 ) : BaseEntity() {
 	fun roles(): List<String> {
-		return roleEntities.map { userRoleEntity -> userRoleEntity.role.name }
+		return roles.map { userRoleEntity -> userRoleEntity.role.name }
 	}
 
 }

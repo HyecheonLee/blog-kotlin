@@ -8,7 +8,7 @@ import javax.persistence.*
  * @email rainbow880616@gmail.com
  */
 @Entity
-data class UserRoleEntity(
+data class UserRole(
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	var id: Long? = null,

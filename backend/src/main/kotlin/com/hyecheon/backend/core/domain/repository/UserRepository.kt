@@ -8,9 +8,9 @@ import java.util.*
  * @author hyecheon
  * @email rainbow880616@gmail.com
  */
-interface UserEntityRepository : JpaRepository<UserEntity, Long> {
+interface UserRepository : JpaRepository<User, Long> {
 
-	fun findByEmail(email: String): Optional<UserEntity>
+	fun findByEmail(email: String): Optional<User>
 	fun existsByEmail(email: String): Boolean
 	fun existsByUsername(email: String): Boolean
 }

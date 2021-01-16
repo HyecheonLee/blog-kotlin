@@ -1,6 +1,6 @@
 package com.hyecheon.backend.core.service
 
-import com.hyecheon.backend.core.domain.entity.*
+import com.hyecheon.backend.core.domain.entity.User
 import com.hyecheon.backend.core.domain.repository.*
 import org.springframework.security.core.*
 import org.springframework.security.core.authority.*
@@ -14,44 +14,44 @@ import org.springframework.stereotype.*
  */
 @Service
 class UserDetailsServiceImpl(
-	val userEntityRepository: UserEntityRepository
+	val userRepository: UserRepository
 ) : UserDetailsService {
 	override fun loadUserByUsername(email: String): UserDetails {
-		val user = userEntityRepository.findByEmail(email).orElseThrow { throw UsernameNotFoundException("[ $email ]존재 하지 않는 이메일 입니다.") }
+		val user = userRepository.findByEmail(email).orElseThrow { throw UsernameNotFoundException("[ $email ]존재 하지 않는 이메일 입니다.") }
 		return getUserDetails(user)
 	}
 
-	fun getUserDetails(user: UserEntity): CustomUserDetails {
+	fun getUserDetails(user: User): CustomUserDetails {
 		return CustomUserDetails(user)
 	}
 
-	class CustomUserDetails(val userEntity: UserEntity) : UserDetails {
+	class CustomUserDetails(val user: User) : UserDetails {
 		override fun getAuthorities(): List<GrantedAuthority> {
-			return userEntity.roleEntities.map { SimpleGrantedAuthority(it.role.value) }
+			return user.roles.map { SimpleGrantedAuthority(it.role.value) }
 		}
 
 		override fun getPassword(): String {
-			return userEntity.password
+			return user.password
 		}
 
 		override fun getUsername(): String {
-			return userEntity.email
+			return user.email
 		}
 
 		override fun isAccountNonExpired(): Boolean {
-			return userEntity.isEnable
+			return user.isEnable
 		}
 
 		override fun isAccountNonLocked(): Boolean {
-			return userEntity.isEnable
+			return user.isEnable
 		}
 
 		override fun isCredentialsNonExpired(): Boolean {
-			return userEntity.isEnable
+			return user.isEnable
 		}
 
 		override fun isEnabled(): Boolean {
-			return userEntity.isEnable
+			return user.isEnable
 		}
 	}
 }

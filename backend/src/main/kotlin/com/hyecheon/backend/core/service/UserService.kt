@@ -14,7 +14,7 @@ import org.springframework.stereotype.*
  * @email rainbow880616@gmail.com
  */
 @Service
-class UserService(val userRepository: UserEntityRepository, val passwordEncoder: BCryptPasswordEncoder) {
+class UserService(val userRepository: UserRepository, val passwordEncoder: BCryptPasswordEncoder) {
 	fun signUp(signupUserRequestDto: SignupUserRequestDto) = run {
 		if (userRepository.existsByEmail(signupUserRequestDto.email)) {
 			throw EmailExistsException(signupUserRequestDto.email)
@@ -24,12 +24,12 @@ class UserService(val userRepository: UserEntityRepository, val passwordEncoder:
 		}
 		LoggedUserDto.from(
 			userRepository.save(
-				UserEntity(
+				User(
 					username = signupUserRequestDto.username,
 					name = signupUserRequestDto.name,
 					email = signupUserRequestDto.email,
 					password = passwordEncoder.encode(signupUserRequestDto.password),
-					roleEntities = mutableSetOf(UserRoleEntity(role = Role.USER))
+					roles = mutableSetOf(UserRole(role = Role.USER))
 				)
 			)
 		)
