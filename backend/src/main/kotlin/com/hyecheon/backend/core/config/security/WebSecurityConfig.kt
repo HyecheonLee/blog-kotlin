@@ -4,6 +4,7 @@ import com.hyecheon.backend.core.service.*
 import org.springframework.boot.autoconfigure.security.servlet.*
 import org.springframework.context.annotation.*
 import org.springframework.security.config.annotation.authentication.builders.*
+import org.springframework.security.config.annotation.method.configuration.*
 import org.springframework.security.config.annotation.web.builders.*
 import org.springframework.security.config.annotation.web.configuration.*
 import org.springframework.security.config.http.*
@@ -16,7 +17,9 @@ import org.springframework.web.cors.*
  * @author hyecheon
  * @email rainbow880616@gmail.com
  */
+@Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
 	// 정적 자원에 대해서는 Security 설정을 적용하지 않음.
@@ -45,25 +48,12 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 	@Bean
 	fun corsConfigurationSource(): CorsConfigurationSource {
 		val configuration = CorsConfiguration()
-		configuration.addAllowedOrigin("http://localhost:3000")
+		configuration.allowCredentials = true
+		configuration.addAllowedOrigin("http://localhost:3000");
 		configuration.addAllowedHeader("*")
 		configuration.addAllowedMethod("*")
-		configuration.allowCredentials = true
-		configuration.addExposedHeader("*")
-		configuration.exposedHeaders = listOf(
-			"Access-Control-Allow-Headers",
-			"Authorization",
-			"X-Frame-Options",
-			"*",
-			"x-xsrf-token",
-			"Access-Control-Allow-Headers",
-			"Origin",
-			"Accept",
-			"X-Requested-With",
-			"Content-Type",
-			"Access-Control-Request-Method",
-			"Access-Control-Request-Headers"
-		)
+		configuration.allowedMethods = listOf("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS");
+		configuration.exposedHeaders = listOf("Authorization")
 		val source = UrlBasedCorsConfigurationSource()
 		source.registerCorsConfiguration("/**", configuration)
 		return source

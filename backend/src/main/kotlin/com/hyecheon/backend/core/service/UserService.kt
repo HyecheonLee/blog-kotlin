@@ -35,6 +35,14 @@ class UserService(val userRepository: UserEntityRepository, val passwordEncoder:
 		)
 	}
 
+	fun findUserInfo(email: String) = run {
+		userRepository.findByEmail(email).orElseThrow { throw UserNotFoundException("이메일 [$email] 을 확인해 주세요") }
+	}
+
+	fun findUserInfo(id: Long) = run {
+		userRepository.findById(id).orElseThrow { throw UserNotFoundException("존재하지 않는 사용자 입니다.") }
+	}
+
 	fun getJwtToken(loginUserRequestDto: LoginUserRequestDto): String {
 		val userEntity = userRepository.findByEmail(loginUserRequestDto.email).orElseThrow { throw RuntimeException("에러") }
 		if (passwordEncoder.matches(loginUserRequestDto.password, userEntity.password)) {

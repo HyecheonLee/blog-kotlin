@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.*
 import com.hyecheon.backend.core.service.*
 import com.hyecheon.backend.core.util.*
 import com.hyecheon.backend.core.util.AuthConstants.AUTH_COOKIE
+import com.hyecheon.backend.core.util.AuthConstants.AUTH_HEADER
 import com.hyecheon.backend.core.web.dto.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.http.*
@@ -38,20 +39,10 @@ class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : Us
 
 	override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
 		if (request is HttpServletRequest) {
-			/*request.getHeader(AuthConstants.AUTH_HEADER)?.let {
+			request.getHeader(AUTH_HEADER)?.let {
 				val jwtToken = TokenUtils.getTokenFromHeader(it)
 				if (isValid(jwtToken)) {
 					jwtTokenAuth(jwtToken, request)
-				}
-			}*/
-			WebUtils.getCookie(request, AUTH_COOKIE)?.value?.let { jwtToken ->
-				val isValidAndIsRefresh = TokenUtils.isValidTokenAndIsRefresh(jwtToken)
-				if (isValidAndIsRefresh.first) {
-					jwtTokenAuth(jwtToken, request)
-					if (isValidAndIsRefresh.second) {
-						TokenUtils.refreshToken(jwtToken)
-						(response as HttpServletResponse).addCookie(Cookie(AUTH_COOKIE, jwtToken))
-					}
 				}
 			}
 		}
@@ -74,8 +65,7 @@ class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : Us
 		val userDetails = authResult.principal as UserDetailsServiceImpl.CustomUserDetails
 		val userEntity = userDetails.userEntity
 		val token = generateJwtToken(userEntity)
-		response.addCookie(Cookie(AUTH_COOKIE, token))
-		response.addHeader(AuthConstants.AUTH_HEADER, AuthConstants.TOKEN_TYPE + " " + token)
+		response.addHeader(AUTH_HEADER, "Bearer $token")
 		response.characterEncoding = "utf-8";
 		response.contentType = "application/json";
 		response.writer?.write(LoggedUserDto.from(userEntity).toJsonString())

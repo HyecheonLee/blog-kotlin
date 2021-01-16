@@ -105,8 +105,9 @@ object TokenUtils {
 	private fun createClaims(userEntity: UserEntity): Map<String, Any> {
 		// 공개 클레임에 사용자의 이름과 이메일을 설정하여 정보를 조회할 수 있다.
 		val claims: MutableMap<String, Any> = HashMap()
+		claims["userId"] = userEntity.id!!
 		claims["email"] = userEntity.email
-		claims["roles"] = userEntity.roleEntities.map { it.role.value }
+		claims["roles"] = userEntity.roleEntities.map { it.role.name }
 		return claims
 	}
 

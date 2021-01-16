@@ -1,35 +1,68 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { APP_NAME } from '../config';
-import { Collapse, Nav, Navbar, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import Link from 'next/link'
+import { useRecoilState } from "recoil";
+import { initUser, userState } from "../states/UserState";
+import { useRouter } from 'next/router'
+import { isAdmin } from "../actions/auth";
 
 const Header = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+  const [user, setUser] = useRecoilState(userState);
+  const router = useRouter();
+  
+  const logout = async (e) => {
+    localStorage.removeItem("authToken");
+    setUser(initUser);
+    await router.push("/user/signIn")
+  }
+  
   return (
-    <div>
-      <Navbar color="light" light expand="md">
+    <>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Link href="/">
-          <NavLink className="font-weight-bold">{APP_NAME}</NavLink>
+          <a className="navbar-brand" href="#">{APP_NAME}</a>
         </Link>
-        <NavbarToggler onClick={toggle}/>
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="ml-auto" navbar>
-            <NavItem>
-              <Link href="/user/singIn">
-                <NavLink>로그인</NavLink>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link href="/user/singUp">
-                <NavLink>회원가입</NavLink>
-              </Link>
-            </NavItem>
-          </Nav>
-        </Collapse>
-      </Navbar>
-    </div>
-  );
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"/>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav ml-auto">
+            {user && user.id !== -1 ?
+              <>
+                <li className="nav-item">
+                  <a className="nav-link" href="" onClick={logout}>로그아웃</a>
+                </li>
+                {isAdmin() ?
+                  (<li className="nav-item">
+                    <Link href="/admin">
+                      <a className={`nav-link ${router.pathname === '/user' && 'active'}`} href="">{user.username} 화면</a>
+                    </Link>
+                  </li>)
+                  : (<li className="nav-item">
+                    <Link href="/user">
+                      <a className={`nav-link ${router.pathname === '/user' && 'active'}`} href="">{user.username} 화면</a>
+                    </Link>
+                  </li>)}
+              </>
+              : <>
+                <li className="nav-item">
+                  <Link href="/user/signIn">
+                    <a className={`nav-link ${router.pathname === '/user/signIn' && 'active'}`} href="">로그인</a>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link href="/user/signUp">
+                    <a className={`nav-link ${router.pathname === '/user/signUp' && 'active'}`} href="">회원가입</a>
+                  </Link>
+                </li>
+              </>}
+          
+          </ul>
+        </div>
+      </nav>
+    </>
+  )
 }
 
 export default Header;
