@@ -46,6 +46,11 @@ dependencies {
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	/*jwt*/
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	/**/
+	// https://mvnrepository.com/artifact/com.github.slugify/slugify
+	implementation("com.github.slugify:slugify:2.4")
 }
 
 tasks.withType<KotlinCompile> {

@@ -1,3 +1,4 @@
+import com.hyecheon.backend.core.domain.*
 import com.hyecheon.backend.core.domain.entity.*
 import io.jsonwebtoken.*
 import org.slf4j.*
@@ -125,8 +126,8 @@ object TokenUtils {
 		return claims["email"] as String
 	}
 
-	public fun getRoleFromToken(token: String): MutableList<String> {
+	public fun getRoleFromToken(token: String): List<String> = run {
 		val claims: Claims = getClaimsFormToken(token)
-		return claims["roles"] as MutableList<String>
+		(claims["roles"] as MutableList<String>).map { role -> Role.create(role).value }
 	}
 }

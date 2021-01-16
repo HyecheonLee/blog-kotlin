@@ -22,7 +22,7 @@ data class LoggedUserDto(
 		fun from(user: User) = run {
 			LoggedUserDto(
 				id = user.id!!, username = user.username, name = user.name, email = user.email,
-				profile = user.profile, about = user.about, roles = user.roles(), photo = blobToBase64(user.photo)
+				profile = user.profile, about = user.about, roles = user.roles(), photo = user.photo
 			)
 		}
 	}
