@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { signUp } from "../../actions/auth";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userState } from "../../states/UserState";
 
 const SignUpComponent = () => {
@@ -11,7 +11,8 @@ const SignUpComponent = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [showForm, setShowForm] = useState(true);
-  const [user, setUser] = useRecoilState(userState);
+  const setUser = useSetRecoilState(userState);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

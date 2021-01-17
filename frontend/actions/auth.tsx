@@ -1,6 +1,5 @@
 import axios from "axios";
 import { API } from "../config";
-import cookie from 'js-cookie'
 import jwtDecode from "jwt-decode";
 import useSWR from "swr";
 
@@ -75,32 +74,11 @@ export const getLoggedUserInfo = async () => {
       }
     })
   })
-  console.log(data, error);
   return {data, error};
 }
 export const getUserInfo = async (userId: string = null, email: string = null) => {
   if (userId) {
   
-  }
-}
-
-export const setCookie = (key, value) => {
-  if (process.browser) {
-    cookie.set(key, value, {
-      expires: 1
-    })
-  }
-}
-export const removeCookie = (key, value) => {
-  if (process.browser) {
-    cookie.remove(key, {
-      expires: 1
-    })
-  }
-}
-export const getCookie = (key) => {
-  if (process.browser) {
-    cookie.get(key);
   }
 }
 export const setLocalStorage = (key, value) => {

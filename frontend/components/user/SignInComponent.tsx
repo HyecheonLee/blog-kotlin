@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { isAdmin, signIn } from "../../actions/auth";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userState } from "../../states/UserState";
 import { useRouter } from "next/router";
 
@@ -10,7 +10,7 @@ const SignInComponent = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter()
-  const [user, setUser] = useRecoilState(userState);
+  const setUser = useSetRecoilState(userState);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
