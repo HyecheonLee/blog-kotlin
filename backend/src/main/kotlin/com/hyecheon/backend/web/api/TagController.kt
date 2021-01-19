@@ -24,7 +24,7 @@ class TagController(private val tagRepository: TagRepository) {
 	@GetMapping
 	fun findAll(@PageableDefault(page = 0, size = 10, sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable) = run {
 		val findAll = tagRepository.findAll(pageable)
-		ResponseEntity.ok(findAll)
+		ResponseEntity.ok(findAll.content)
 	}
 
 	@GetMapping("/{slug}")

@@ -2,6 +2,7 @@ import axios from "axios";
 import { API } from "../config";
 import jwtDecode from "jwt-decode";
 import useSWR from "swr";
+import exp from "constants";
 
 interface TokenInfo {
   userId: number;
@@ -10,17 +11,6 @@ interface TokenInfo {
   roles: string[] | null;
 }
 
-export const fetcher = async (url) => {
-  let config = null
-  if (isValidToken()) {
-    const token = localStorage.getItem("authToken");
-    config = {
-      headers: {"Authorization": `Bearer ${token}`}
-    }
-  }
-  const response = await axios.get(url, config);
-  return response.data;
-}
 export const signUp = async (singUpRequest: { username: string, email: string, password: string }) => {
   try {
     const response = await axios.post(`${API}/api/user/signUp`,
@@ -57,7 +47,6 @@ export const signIn = async (signUpRequest: { email: string, password: string })
       error: null,
     }
   } catch (e) {
-    console.log(e)
     const {data} = e.response;
     return {
       user: null,
@@ -68,11 +57,7 @@ export const signIn = async (signUpRequest: { email: string, password: string })
 export const getLoggedUserInfo = async () => {
   const {data, error} = isValidToken() && useSWR(`${API}/api/user`, () => {
     const token = localStorage.getItem("authToken");
-    axios.get(`${API}/api/user`, {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    })
+    axios.get(`${API}/api/user`, getAuthConfig())
   })
   return {data, error};
 }
@@ -104,8 +89,11 @@ const getTokenInfo = () => {
   }
   return null;
 }
+export const loggedEmail = () => {
+  let tokenInfo = getTokenInfo();
+  return tokenInfo ? tokenInfo.email : "";
+}
 export const isValidToken = () => {
-  
   return getTokenInfo() !== null
 }
 export const isLogged = () => {
@@ -115,4 +103,15 @@ export const isLogged = () => {
 export const isAdmin = () => {
   let tokenInfo = getTokenInfo();
   return tokenInfo && tokenInfo.roles.includes("ADMIN")
+}
+
+export function getAuthConfig() {
+  const token = localStorage.getItem("authToken");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      "Content-Type": "application/json"
+    }
+  };
 }

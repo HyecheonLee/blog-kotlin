@@ -89,9 +89,9 @@ object TokenUtils {
 	}
 
 	private fun createExpireDate(): Date {
-		// 토큰 만료시간은 30분으로 설정
+		// 토큰 만료시간은 30일로 설정
 		val c = Calendar.getInstance()
-		c.add(Calendar.MINUTE, 30)
+		c.add(Calendar.MINUTE, 60 * 24 * 30)
 		return c.time
 	}
 

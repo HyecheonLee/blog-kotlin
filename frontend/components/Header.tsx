@@ -1,23 +1,17 @@
 import React from 'react';
 import { APP_NAME } from '../config';
 import Link from 'next/link'
-import { useRecoilState } from "recoil";
-import { initUser, userState } from "../states/UserState";
 import { useRouter } from 'next/router'
 
-import { isAdmin } from "../actions/auth";
+import { isAdmin, isLogged, loggedEmail } from "../actions/auth";
 
 
 const Header = (props) => {
-  const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
-  
   const logout = async (e) => {
     localStorage.removeItem("authToken");
-    setUser(initUser);
     await router.push("/user/signIn")
   }
-  
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -30,7 +24,7 @@ const Header = (props) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
-            {user && user.id !== -1 ?
+            {isLogged() ?
               <>
                 <li className="nav-item">
                   <a className="nav-link" href="" onClick={logout}>로그아웃</a>
@@ -38,12 +32,12 @@ const Header = (props) => {
                 {isAdmin() ?
                   (<li className="nav-item">
                     <Link href="/admin">
-                      <a className={`nav-link ${router.pathname === '/user' && 'active'}`} href="">{user.username} 화면</a>
+                      <a className={`nav-link ${router.pathname === '/admin' && 'active'}`} href="">{loggedEmail()}</a>
                     </Link>
                   </li>)
                   : (<li className="nav-item">
                     <Link href="/user">
-                      <a className={`nav-link ${router.pathname === '/user' && 'active'}`} href="">{user.username} 화면</a>
+                      <a className={`nav-link ${router.pathname === '/user' && 'active'}`} href="">{loggedEmail()}</a>
                     </Link>
                   </li>)}
               </>
@@ -58,8 +52,8 @@ const Header = (props) => {
                     <a className={`nav-link ${router.pathname === '/user/signUp' && 'active'}`} href="">회원가입</a>
                   </Link>
                 </li>
-              </>}
-          
+              </>
+            }
           </ul>
         </div>
       </nav>

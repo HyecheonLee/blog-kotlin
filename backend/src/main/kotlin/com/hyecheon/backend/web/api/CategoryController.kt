@@ -24,7 +24,7 @@ class CategoryController(private val categoryRepository: CategoryRepository) {
 	@GetMapping
 	fun findAll(@PageableDefault(page = 0, size = 10, sort = ["id"], direction = Sort.Direction.DESC) pageable: Pageable) = run {
 		val findAll = categoryRepository.findAll(pageable)
-		ResponseEntity.ok(findAll)
+		ResponseEntity.ok(findAll.content)
 	}
 
 	@GetMapping("/{slug}")
