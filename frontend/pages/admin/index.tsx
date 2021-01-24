@@ -14,12 +14,12 @@ const AdminIndex = () => {
             <ul className="list-group">
               <li className="list-group-item">
                 <Link href="/admin/crud/category-tag">
-                  <a>카테고리 관리기</a>
+                  <a>카테고리 & 태그 관리기</a>
                 </Link>
               </li>
               <li className="list-group-item">
-                <Link href="/admin/crud/category-tag">
-                  <a> 태그 관리기</a>
+                <Link href="/admin/crud/blog">
+                  <a>블로그 관리기</a>
                 </Link>
               </li>
             </ul>

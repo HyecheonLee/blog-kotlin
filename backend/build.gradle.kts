@@ -51,6 +51,9 @@ dependencies {
 	/**/
 	// https://mvnrepository.com/artifact/com.github.slugify/slugify
 	implementation("com.github.slugify:slugify:2.4")
+
+	// https://mvnrepository.com/artifact/org.apache.tika/tika-core
+	implementation("org.apache.tika:tika-core:1.25")
 }
 
 tasks.withType<KotlinCompile> {

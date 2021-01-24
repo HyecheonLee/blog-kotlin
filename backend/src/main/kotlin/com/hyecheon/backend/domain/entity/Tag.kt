@@ -2,6 +2,7 @@ package com.hyecheon.backend.domain.entity
 
 import com.github.slugify.*
 import com.hyecheon.backend.core.domain.entity.*
+import com.hyecheon.backend.utils.*
 import javax.persistence.*
 import javax.validation.constraints.*
 
@@ -21,10 +22,5 @@ data class Tag(
 	var name: String?,
 
 	@Column(unique = true)
-	var slug: String? = null
-) : BaseEntityUser() {
-	init {
-		val slg = Slugify().withLowerCase(true)
-		slug = slg.slugify(name)
-	}
-}
+	var slug: String? = name?.slug()
+) : BaseEntity()

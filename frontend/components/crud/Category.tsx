@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { create } from "../../actions/category";
+import { createCategory } from "../../actions/category";
 import { getRequest } from "../../actions/useRequest.js";
 import axios from "axios";
 import { API } from "../../config";
@@ -51,7 +51,7 @@ const Category = () => {
   
   const clickSubmit = async (e) => {
     e.preventDefault();
-    const {category, error} = await create(name);
+    const {category, error} = await createCategory(name);
     if (error) {
       setValues({removed: false, success: false, error: {isError: true, message: error.message}});
     } else {

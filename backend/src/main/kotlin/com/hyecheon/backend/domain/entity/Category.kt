@@ -2,6 +2,7 @@ package com.hyecheon.backend.domain.entity
 
 import com.github.slugify.*
 import com.hyecheon.backend.core.domain.entity.*
+import com.hyecheon.backend.utils.*
 import javax.persistence.*
 import javax.validation.constraints.*
 
@@ -19,13 +20,8 @@ data class Category(
 
 	@NotBlank(message = "이름은 필수 값입니다.")
 	@Column(unique = true, length = 32)
-	var name: String?,
+	var name: String? = null,
 
-	@Column(unique = true)
-	var slug: String? = null
-) : BaseEntityUser() {
-	init {
-		val slg = Slugify().withLowerCase(true)
-		slug = slg.slugify(name)
-	}
-}
+//	@Column(unique = true)
+	var slug: String? = name?.slug()
+) : BaseEntity()

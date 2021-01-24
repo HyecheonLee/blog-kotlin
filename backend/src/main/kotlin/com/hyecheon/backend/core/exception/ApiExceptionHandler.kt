@@ -3,6 +3,7 @@ package com.hyecheon.backend.core.exception
 import org.hibernate.*
 import org.springframework.dao.*
 import org.springframework.http.*
+import org.springframework.validation.*
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -30,6 +31,16 @@ class ApiExceptionHandler {
 	@ExceptionHandler(UsernameExistsException::class)
 	fun usernameExistsExceptionHandler(e: UsernameExistsException) = run {
 		ResponseEntity(mapOf("message" to e.message), HttpStatus.BAD_REQUEST)
+	}
+
+	@ExceptionHandler(BindException::class)
+	fun bindExceptionHandler(e: BindException) = run {
+		val fieldErrors = e.bindingResult.fieldErrors
+		val errorMap = mutableMapOf<String, String?>()
+		val message = fieldErrors.forEach { fieldError ->
+			errorMap[fieldError.field] = fieldError.defaultMessage
+		}
+		ResponseEntity(mapOf("message" to errorMap), HttpStatus.BAD_REQUEST)
 	}
 
 	@ExceptionHandler(Exception::class)
